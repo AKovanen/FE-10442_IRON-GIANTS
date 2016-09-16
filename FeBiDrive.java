@@ -1,9 +1,8 @@
+// ALEKSI KOVANEN :: BI ROBOT MAIN DRIVE PROGRAM :: 16 / 9 / 16
+
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-// aleksi kovanen :: 8 / 9 / 16
-// NOTE : right drive is plugged into p6 , left is plugged into p5
-// NOTE : joy 1 = left analog stick , joy 2 = right analog stick
 
 public class FeBiDrive extends OpMode
 {
@@ -18,7 +17,7 @@ public class FeBiDrive extends OpMode
     @Override
     public void loop()
     {
-        myRobotDrive.omnidrive(gamepad1);
+        myRobotDrive.bidrive(gamepad1);
     }
     @Override
     public void stop()

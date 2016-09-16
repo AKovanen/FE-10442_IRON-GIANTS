@@ -1,3 +1,5 @@
+// ALEKSI KOVANEN :: BI DRIVE BASE ROBOT MAIN CODE :: 16 / 9 / 16
+
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,13 +18,13 @@ public class FeBiCFair
         rightmotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    public void omnidrive(float lefty, float righty)
+    public void bidrive(float lefty, float righty)
     {
-        leftmotor.setPower(lefty);
-        rightmotor.setPower(righty);
+        leftmotor.setPower(lefty/4);
+        rightmotor.setPower(righty/4);
     }
-    public void omnidrive(Gamepad gamepad)
+    public void bidrive(Gamepad gamepad)
     {
-        omnidrive(gamepad.right_stick_y, gamepad.left_stick_y);
+        bidrive(gamepad.right_stick_y, gamepad.left_stick_y);
     }
 }
