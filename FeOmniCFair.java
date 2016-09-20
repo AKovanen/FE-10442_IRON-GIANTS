@@ -1,5 +1,4 @@
 // ALEKSI KOVANEN :: OMNI ROBOT MAIN PROGRAM :: 16 / 9 / 16
-
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.robotcore.hardware.DcMotor; // import methods for DC Motors
@@ -23,9 +22,12 @@ public class FeOmniCFair
         downmotor = down_drive;
         leftmotor = left_drive;
         rightmotor = right_drive;
+
+        downmotor.setDirection(DcMotor.Direction.REVERSE);
+        leftmotor.setDirection(DcMotor.Direction.REVERSE);
     }
-    // primary function of program that routes right analog stick input values to motor power
-    public void omnidrive(float righty, float rightx)
+    // primary function of program that routes right and left analog sticks inputs
+    public void omnidrive(float righty, float rightx, float lefty)
     {
         // The following requires this diagram of the drive base for easier comprehension.
         //  U ------ R      U --> upward drive motor
@@ -33,36 +35,34 @@ public class FeOmniCFair
         //  |        |      L --> left drive motor
         //  |        |      D --> down drive motor
         //  L ------ D
-        // righty and rightx are variables used to communicate input values from the 'y' and 'x'
-        // analog stick rotational axises respectively as registered by drive station in gamepad.
-        // The maths and syntax involved is self explanatory of what is being done.
-        if(righty < 0)
-        {
-            rightmotor.setDirection(DcMotor.Direction.REVERSE);
-            downmotor.setDirection(DcMotor.Direction.REVERSE);  }
-        if(righty > 0)
-        {
-            upmotor.setDirection(DcMotor.Direction.REVERSE);
-            leftmotor.setDirection(DcMotor.Direction.REVERSE);  }
-        if(rightx < 0)
-        {
-            upmotor.setDirection(DcMotor.Direction.REVERSE);
-            rightmotor.setDirection(DcMotor.Direction.REVERSE); }
-        if(rightx > 0)
-        {
-            downmotor.setDirection(DcMotor.Direction.REVERSE);
-            leftmotor.setDirection(DcMotor.Direction.REVERSE);  }
+        //
+        // 20 / 9 / 16 :: omni bot controls explained
+        // The controls are managed computationally in the form of the three floating point vars.
+        //      - righty (read y axis value of the right analog stick)
+        //      - rightx (read x axis value of the right analog stick)
+        //      - lefty  (read y axis value of the left analog stick)
+        //
+        // righty and rightx are used to map power input to the down / up and left / right
+        // DcMotors respectively. The values that are read and recorded to those respective
+        // float variables, before being implemented through power input, is translated through
+        // a sum operation with the lefty float variable, which enables the robot to spin on
+        // an axis.
+        // To allow this spin, the lefty variable value is either added or subtracted from the
+        // given power value depending on which side :
+        //      - if the top side of motors (up and right), then add lefty value
+        //      - if the bottom side of motors (down and left), then subtract lefty value
+        //
+        // This addition or subtraction from the given power value at each motor depending on the
+        // side allows for the smooth spinning.
 
-        // motors relevant to the 'left' side of the robot
-        upmotor.setPower(righty);
-        leftmotor.setPower(rightx);
-        // motors relevant to the 'right' side of the robot
-        downmotor.setPower(righty);
-        rightmotor.setPower(rightx);
+        upmotor.setPower(righty+lefty);
+        downmotor.setPower(righty-lefty);
+        leftmotor.setPower(rightx-lefty);
+        rightmotor.setPower(rightx+lefty);
     }
     // source function that routes controller input to previously mentioned omnidrive function
     public void omnidrive(Gamepad gamepad)
     {   // values-to-look-for from gamepad input values laid out to program run time
-        omnidrive(gamepad.right_stick_y,gamepad.right_stick_x);
+        omnidrive(gamepad.right_stick_y,gamepad.right_stick_x,gamepad.left_stick_y);
     }
 }
