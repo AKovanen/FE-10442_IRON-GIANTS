@@ -26,8 +26,8 @@ public class FeOmniCFair
         downmotor.setDirection(DcMotor.Direction.REVERSE);
         leftmotor.setDirection(DcMotor.Direction.REVERSE);
     }
-    // primary function of program that routes right and left analog sticks inputs
-    public void omnidrive(float righty, float rightx, float lefty)
+    // primary function of program that routes right analog stick inputs
+    public void omnidrive(float righty, float rightx)
     {
         // The following requires this diagram of the drive base for easier comprehension.
         //  U ------ R      U --> upward drive motor
@@ -55,14 +55,14 @@ public class FeOmniCFair
         // This addition or subtraction from the given power value at each motor depending on the
         // side allows for the smooth spinning.
 
-        upmotor.setPower(righty+lefty);
-        downmotor.setPower(righty-lefty);
-        leftmotor.setPower(rightx-lefty);
-        rightmotor.setPower(rightx+lefty);
+        upmotor.setPower(righty);
+        downmotor.setPower(righty);
+        leftmotor.setPower(rightx);
+        rightmotor.setPower(rightx);
     }
     // source function that routes controller input to previously mentioned omnidrive function
     public void omnidrive(Gamepad gamepad)
     {   // values-to-look-for from gamepad input values laid out to program run time
-        omnidrive(gamepad.right_stick_y,gamepad.right_stick_x,gamepad.left_stick_y);
+        omnidrive(gamepad.right_stick_y,gamepad.right_stick_x);
     }
 }
